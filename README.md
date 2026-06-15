@@ -15,7 +15,7 @@ brew install git
 brew install python
 
 # Download the project
-git clone https://github.com/wesjor/Fake-Glitch-Virus.git
+git clone https://github.com/ZyntrioxYT/Fake-Glitch-Virus.git
 
 # Open the project folder
 cd YOUR_REPOSITORY
