@@ -1,7 +1,7 @@
 # Fake-Glitch-Virus
 THIS DOES NOT DO ANYTHING, JUST A FUN TRICK TO PULL ON YOUR FRIENDS
 
-COMMANDS YOU MIGHT NEED TO USE:
+(Mac) COMMANDS YOU MIGHT NEED TO USE:
 # Install Homebrew
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
