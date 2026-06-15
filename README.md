@@ -28,10 +28,10 @@ python3 -m pip install pyinstaller
 pyinstaller --onefile --windowed --name Roblox glitch_demo.py
 
 # Run the app
-python3 glitch_demo.py
+python3 glitch_demo.py 
 
 
-(Windows) COMMANDS YOU NEED TO USE
+ # (Windows) COMMANDS YOU NEED TO USE
 
 # Install Git
 winget install Git.Git
@@ -59,7 +59,7 @@ pyinstaller --onefile --windowed --name Roblox glitch_demo.py
 python glitch_demo.py
 
 
-(Linux) COMMANDS YOU NEED TO USE
+# (Linux) COMMANDS YOU NEED TO USE
 
 # Debian / Ubuntu only
 sudo apt update
