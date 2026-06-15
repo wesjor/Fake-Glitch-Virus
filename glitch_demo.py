@@ -38,6 +38,10 @@ fake_tasks = [
     "INSTALLING 999 PING",
     "DOWNLOADING CHAOS",
     "REMOVING FPS",
+    "HACKING ROBLOX ACCOUNT",
+    "STEALING ROBUX",
+    "SETTING CPU TEMPERATURE TO 1000 DEGREES",
+    "TEXTING EVERYONE 67",
 ]
 
 def make_noise(freq, duration=0.05, volume=0.15):
