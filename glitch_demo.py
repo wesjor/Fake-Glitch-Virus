@@ -8,7 +8,6 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
 pygame.display.set_caption("Roblox")
 clock = pygame.time.Clock()
 
-# Fake Roblox loading screen
 font_logo = pygame.font.SysFont(None, 110)
 font_small = pygame.font.SysFont(None, 42)
 
@@ -27,6 +26,8 @@ frame = 0
 
 font_big = pygame.font.SysFont(None, 74)
 font_mid = pygame.font.SysFont(None, 46)
+font_task = pygame.font.SysFont(None, 28, bold=True)
+font_task_small = pygame.font.SysFont(None, 22)
 
 fake_tasks = [
     "DELETING IMPORTANT FILES",
@@ -43,6 +44,73 @@ fake_tasks = [
     "SETTING CPU TEMPERATURE TO 1000 DEGREES",
     "TEXTING EVERYONE 67",
 ]
+
+class CrazyTask:
+    def __init__(self, text=None, x=None, y=None):
+        self.text = text or random.choice(fake_tasks)
+        self.x = x if x is not None else random.randint(100, WIDTH - 260)
+        self.y = y if y is not None else random.randint(80, HEIGHT - 120)
+        self.vx = random.uniform(-9, 9)
+        self.vy = random.uniform(-9, 9)
+        self.angle = random.randint(0, 360)
+        self.spin = random.uniform(-8, 8)
+        self.scale = random.uniform(0.75, 1.25)
+        self.colour = self.random_colour()
+        self.life = random.randint(400, 900)
+
+    def random_colour(self):
+        return (
+            random.randint(80, 255),
+            random.randint(40, 255),
+            random.randint(40, 255)
+        )
+
+    def update(self):
+        self.x += self.vx
+        self.y += self.vy
+        self.angle += self.spin
+        self.life -= 1
+
+        if self.x < 0 or self.x > WIDTH:
+            self.vx *= -1
+            self.colour = self.random_colour()
+
+        if self.y < 0 or self.y > HEIGHT:
+            self.vy *= -1
+            self.colour = self.random_colour()
+
+        if random.random() < 0.04:
+            self.vx += random.uniform(-2.5, 2.5)
+            self.vy += random.uniform(-2.5, 2.5)
+            self.spin += random.uniform(-1.5, 1.5)
+            self.colour = self.random_colour()
+
+        self.vx = max(-14, min(14, self.vx))
+        self.vy = max(-14, min(14, self.vy))
+
+    def draw(self):
+        box = pygame.Surface((300, 95), pygame.SRCALPHA)
+        box.fill((0, 0, 0, 0))
+
+        pygame.draw.rect(box, self.colour, (0, 0, 300, 95), border_radius=12)
+        pygame.draw.rect(box, (0, 0, 0), (0, 0, 300, 95), 4, border_radius=12)
+
+        title = font_task.render(self.text, True, (0, 0, 0))
+        small = font_task_small.render("FAKE TASK COPY.exe", True, (20, 20, 20))
+
+        box.blit(title, (12, 22))
+        box.blit(small, (12, 60))
+
+        rotated = pygame.transform.rotozoom(box, self.angle, self.scale)
+        rect = rotated.get_rect(center=(self.x, self.y))
+        screen.blit(rotated, rect)
+
+crazy_tasks = []
+
+def spawn_task_copies(amount=4):
+    task = fake_tasks[(frame // 45) % len(fake_tasks)]
+    for _ in range(amount):
+        crazy_tasks.append(CrazyTask(task, WIDTH // 2, HEIGHT // 2))
 
 def make_noise(freq, duration=0.05, volume=0.15):
     sr = 44100
@@ -101,7 +169,7 @@ def readable_fake_warning():
     pygame.draw.rect(screen, (255, 255, 255), (bar_x, bar_y, bar_w, bar_h), 3)
     pygame.draw.rect(screen, (255, 0, 0), (bar_x + 5, bar_y + 5, int((bar_w - 10) * percent / 100), bar_h - 10))
 
-    status = font_mid.render(f"{percent}% COMPLETE   |   YOUR COOKED >:)", True, (255, 255, 255))
+    status = font_mid.render(f"{percent}% COMPLETE   |   YOU'RE COOKED >:)", True, (255, 255, 255))
     screen.blit(status, (x + 35, y + 160))
 
 running = True
@@ -113,6 +181,7 @@ while running:
         stage = (stage + 1) % 20
         stage_start = time.time()
         screen.fill((0, 0, 0))
+        spawn_task_copies(8)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -230,6 +299,15 @@ while running:
         screen.fill((random.randint(0,255), random.randint(0,255), random.randint(0,255)))
         for _ in range(20):
             flash()
+
+    if frame % 18 == 0 and len(crazy_tasks) < 55:
+        spawn_task_copies(random.randint(1, 3))
+
+    for task in crazy_tasks[:]:
+        task.update()
+        task.draw()
+        if task.life <= 0:
+            crazy_tasks.remove(task)
 
     if frame % 20 < 14:
         readable_fake_warning()
